@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Картотека студентов | Мини-CRM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Картотека студентов</h2>
+            <a href="/add" class="btn btn-primary">+ Добавить студента</a>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" id="searchInput" class="form-control" placeholder="Мгновенный поиск по всем полям...">
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>ФИО (РУС)</th>
+                            <th>ФИО (КИТ)</th>
+                            <th>Паспорт</th>
+                            <th>Программа</th>
+                            <th>Документ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableBody">
+                        {% for student in students %}
+                        <tr>
+                            <td>{{ student.id }}</td>
+                            <td>{{ student.full_name_ru }}</td>
+                            <td>{{ student.full_name_zh or '-' }}</td>
+                            <td>{{ student.passport }}</td>
+                            <td><span class="badge bg-secondary">{{ student.program }}</span></td>
+                            <td>
+                                {% if student.document_filename %}
+                                    <span class="text-success">✔ Загружен</span>
+                                {% else %}
+                                    <span class="text-muted">Нет файла</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr id="noDataRow">
+                            <td colspan="6" class="text-center text-muted py-3">База данных пуста.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#studentsTableBody tr:not(#noDataRow)');
+
+            rows.forEach(row => {
+                let text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? '' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -8,9 +8,13 @@
 </head>
 <body class="bg-light">
     <div class="container mt-5">
+
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Картотека студентов</h2>
-            <a href="/add" class="btn btn-primary">+ Добавить студента</a>
+            <div>
+                <a href="/backup" class="btn btn-outline-secondary me-2">💾 Скачать Backup</a>
+                <a href="/add" class="btn btn-primary">+ Добавить студента</a>
+            </div>
         </div>
 
         <div class="mb-3">
@@ -34,7 +38,7 @@
                         {% for student in students %}
                         <tr>
                             <td>{{ student.id }}</td>
-                            <td>{{ student.full_name_ru }}</td>
+                            <td><a href="/student/{{ student.id }}" class="text-decoration-none fw-bold">{{ student.full_name_ru }}</a></td>
                             <td>{{ student.full_name_zh or '-' }}</td>
                             <td>{{ student.passport }}</td>
                             <td><span class="badge bg-secondary">{{ student.program }}</span></td>
@@ -55,6 +59,7 @@
                 </table>
             </div>
         </div>
+
     </div>
 
     <script>
